@@ -99,8 +99,16 @@ flutter test      # run the tests
 flutter run       # launch on a connected device or emulator
 ```
 
-The Supabase URL and publishable key (card 1.3) are passed at build time with
-`--dart-define`; never commit the service-role key.
+The Supabase URL and publishable key default to the team project (see
+`lib/core/supabase_config.dart`), so the commands above just work. The
+publishable key is safe to commit because row-level security protects the data.
+To point at a different project, override them at build time:
+
+```
+flutter run --dart-define=SUPABASE_URL=https://<ref>.supabase.co --dart-define=SUPABASE_PUBLISHABLE_KEY=<key>
+```
+
+Never commit the service-role key.
 
 ## How we work
 
