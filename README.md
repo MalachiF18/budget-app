@@ -89,6 +89,8 @@ see their ledger.
 The rules above are enforced by the database (row-level security), not only by
 the app.
 
+Diagrams: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). Table and function details: [docs/DATABASE.md](docs/DATABASE.md).
+
 ## Run it
 
 Setup steps arrive with the app shell (Trello card 1.1) and the Supabase project
