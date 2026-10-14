@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Least privilege: this workflow only reads the repo.
+permissions:
+  contents: read
+
+# One run per ref; a new push to a PR cancels the stale run, but main runs finish.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # The Android build (Gradle) needs a JDK; Flutter's tooling does not install one.
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      # Pinned version so every teammate and CI build with the same SDK.
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.2'
+          channel: stable
+          cache: true
+
+      - run: flutter pub get
+
+      # Fails the build on unformatted code instead of rewriting it in CI.
+      - run: dart format --output=none --set-exit-if-changed .
+
+      - run: flutter analyze
+
+      - run: flutter test
+
+      # Release signing uses debug keys for now; store signing is Project 6.
+      - run: flutter build apk --release
+
+      # Lets reviewers download the built APK from the run page.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: budget-app-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+          retention-days: 14
