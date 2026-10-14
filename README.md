@@ -1,5 +1,7 @@
 # budget-app
 
+[![Build status](https://github.com/MalachiF18/budget-app/actions/workflows/ci.yml/badge.svg)](https://github.com/MalachiF18/budget-app/actions/workflows/ci.yml)
+
 A phone app with two halves:
 
 - **Personal**: plan your month. Enter your pay, necessary bills, a savings
@@ -93,8 +95,13 @@ Diagrams: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). Table and function detai
 
 ## Run it
 
-Setup steps arrive with the app shell (Trello card 1.1) and the Supabase project
-(card 1.3). The Supabase URL and publishable key are passed at build time with
+```
+flutter pub get   # install dependencies
+flutter test      # run the tests
+flutter run       # launch on a connected device or emulator
+```
+
+The Supabase URL and publishable key (card 1.3) are passed at build time with
 `--dart-define`; never commit the service-role key.
 
 ## How we work
