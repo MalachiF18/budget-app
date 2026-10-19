@@ -4,14 +4,16 @@ import 'package:budget_app/core/theme.dart';
 import 'package:budget_app/features/group/group_screen.dart';
 import 'package:budget_app/features/personal/personal_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:budget_app/features/personal/budget_repository.dart';
 
 /// App root: MaterialApp plus the Personal | Group bottom-nav shell, behind a
 /// startup gate (sign-in, display name).
 class BudgetApp extends StatefulWidget {
-  const BudgetApp({super.key, required this.auth});
+  const BudgetApp({super.key, required this.auth, this.budgets});
 
   /// Injected so tests can pass a fake instead of the network.
   final AuthRepository auth;
+  final BudgetRepository? budgets;
 
   @override
   State<BudgetApp> createState() => _BudgetAppState();
@@ -36,7 +38,10 @@ class _BudgetAppState extends State<BudgetApp> {
       // IndexedStack keeps both screens mounted so each tab keeps its state.
       body: IndexedStack(
         index: _index,
-        children: const [PersonalScreen(), GroupScreen()],
+        children: [
+          PersonalScreen(repository: widget.budgets),
+          const GroupScreen(),
+        ],
       ),
       bottomNavigationBar: NavigationBar(
         selectedIndex: _index,

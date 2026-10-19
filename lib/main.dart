@@ -2,6 +2,7 @@ import 'package:budget_app/core/app.dart';
 import 'package:budget_app/core/auth/auth_repository.dart';
 import 'package:budget_app/core/supabase_config.dart';
 import 'package:flutter/material.dart';
+import 'package:budget_app/features/personal/budget_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> main() async {
@@ -10,5 +11,10 @@ Future<void> main() async {
     url: supabaseUrl,
     publishableKey: supabasePublishableKey,
   );
-  runApp(BudgetApp(auth: SupabaseAuthRepository(Supabase.instance.client)));
+  runApp(
+    BudgetApp(
+      auth: SupabaseAuthRepository(Supabase.instance.client),
+      budgets: SupabaseBudgetRepository(Supabase.instance.client),
+    ),
+  );
 }

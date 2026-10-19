@@ -16,7 +16,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Personal'), findsWidgets);
-    expect(find.textContaining('card 2.3'), findsOneWidget);
+    expect(find.text('Your earnings'), findsOneWidget);
   });
 
   testWidgets('tapping Group shows the Group screen', (tester) async {

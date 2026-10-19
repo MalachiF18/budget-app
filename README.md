@@ -121,3 +121,38 @@ Never commit the service-role key.
 5. When the card's **Done when** is true and the PR is merged, move it to **Done**.
 
 Commit small and often; regular progress is part of the grade.
+
+## Personal budget (cards 2.1–2.7)
+
+The Personal tab loads the signed-in user's budget from Supabase. Earnings,
+recurring bills, subscriptions and savings are monthly values. One-time needs
+and logged spending belong to their calendar month. W / M / Y are projections
+of that monthly snapshot (12/52, 1, 12); M is selected whenever the screen opens.
+Edits always use monthly amounts, even while viewing W or Y. Recent transactions
+show their actual amounts and dates rather than projected amounts.
+
+All money uses integer cents. Percentage savings uses earnings minus necessary
+bills, with a minimum savings base of zero. Percentage and period rounding use
+nearest cent, with ties away from zero. Spending money is allowed to be negative;
+zero or positive displays green **WELL**, negative displays red **BAD**.
+
+Before running this version against an existing Supabase project, apply
+`supabase/migrations/20261019000001_personal_budget_save.sql` using
+`supabase db push` on your linked project or the dashboard SQL editor. This adds
+`save_personal_budget`, an atomic, SECURITY INVOKER RPC using existing owner-only
+RLS. It preserves one-time items from other months. Transactions are inserted
+separately and are never rewritten by budget edits. The publishable app key
+cannot apply migrations. Run `supabase/tests/personal_budget_test.sql` against a
+disposable/local database after applying migrations to verify ownership and
+rollback behavior.
+
+The repository is injectable for tests. `PersonalScreen()` without a repository
+shows an explicitly labeled example budget in memory; production `main.dart`
+always supplies `SupabaseBudgetRepository`. Drafts update the screen only after
+a successful save; failed loads/saves offer retry without pretending data saved.
+
+Validation: `dart format --output=none --set-exit-if-changed .`,
+`flutter analyze`, and `flutter test`. CI already runs all unit and widget tests.
+The private Claude mockup could not be accessed during implementation, so exact
+visual matching still needs review with access to that artifact. Live close /
+reopen persistence needs verification after deploying the migration.
