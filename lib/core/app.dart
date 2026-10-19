@@ -25,7 +25,8 @@ class _BudgetAppState extends State<BudgetApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Budget App',
+      title: 'Split & Spend',
+      debugShowCheckedModeBanner: false,
       // Theme lives on MaterialApp so the nav bar switches colors with the tab.
       // Startup screens (spinner, name) show under the Personal theme.
       theme: _index == 0 ? personalTheme : groupTheme,
@@ -48,8 +49,8 @@ class _BudgetAppState extends State<BudgetApp> {
         onDestinationSelected: (i) => setState(() => _index = i),
         destinations: const [
           NavigationDestination(
-            icon: Icon(Icons.person_outline),
-            selectedIcon: Icon(Icons.person),
+            icon: Icon(Icons.account_balance_wallet_outlined),
+            selectedIcon: Icon(Icons.account_balance_wallet_outlined),
             label: 'Personal',
           ),
           NavigationDestination(

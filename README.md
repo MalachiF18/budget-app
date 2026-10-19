@@ -153,6 +153,9 @@ a successful save; failed loads/saves offer retry without pretending data saved.
 
 Validation: `dart format --output=none --set-exit-if-changed .`,
 `flutter analyze`, and `flutter test`. CI already runs all unit and widget tests.
-The private Claude mockup could not be accessed during implementation, so exact
-visual matching still needs review with access to that artifact. Live close /
-reopen persistence needs verification after deploying the migration.
+The Personal screen follows the supplied October 19 mockup screenshots: dark
+green surfaces, teal accents, labeled edit cards, progress bars, category
+descriptions and example amounts. It retains the specified W / M / Y order and
+WELL / BAD wording. The Group mockup is reference only; its feature work is
+separate. Live close / reopen persistence needs verification after deploying
+the migration.

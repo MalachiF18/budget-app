@@ -95,13 +95,15 @@ class PersonalBudget {
     transactions: transactions ?? this.transactions,
   );
   factory PersonalBudget.example() => PersonalBudget(
-    earnings: 450000,
+    earnings: 240000,
     savingsMode: SavingsMode.percent,
-    savingsValue: 20,
+    savingsValue: 15,
     items: [
-      BudgetItem('Rent', 140000, ItemKind.bill),
-      BudgetItem('Utilities', 18000, ItemKind.bill),
+      BudgetItem('Rent', 90000, ItemKind.bill),
+      BudgetItem('Utilities', 12000, ItemKind.bill),
+      BudgetItem('Cell plan', 4500, ItemKind.bill),
       BudgetItem('Music', 1099, ItemKind.subscription),
+      BudgetItem('Streaming', 1649, ItemKind.subscription),
       BudgetItem('New shoes', 8500, ItemKind.oneTime),
     ],
   );
