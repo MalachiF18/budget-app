@@ -1,6 +1,9 @@
-name: Deploy Flutter Web Preview
+name: Build and Deploy Flutter Web
 
 on:
+  pull_request:
+    branches:
+      - main
   push:
     branches:
       - main
@@ -11,17 +14,9 @@ permissions:
   pages: write
   id-token: write
 
-concurrency:
-  group: budget-app-pages
-  cancel-in-progress: false
-
 jobs:
-  deploy:
+  build-web:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -36,17 +31,38 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Build app for Netlify or other root hosting
+      - name: Build site for Netlify and other root-level hosting
         run: flutter build web --release
 
-      - name: Save root-hosted web build
+      - name: Save the web build
         uses: actions/upload-artifact@v4
         with:
           name: budget-app-web-netlify
           path: build/web
           retention-days: 14
 
-      - name: Build app for GitHub Pages
+  deploy-pages:
+    if: github.event_name != 'pull_request'
+    needs: build-web
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.47.2'
+          channel: stable
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build site for GitHub Pages project path
         run: flutter build web --release --base-href /budget-app/
 
       - name: Configure GitHub Pages
