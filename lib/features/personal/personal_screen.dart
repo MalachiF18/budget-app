@@ -7,9 +7,15 @@ import 'budget_repository.dart';
 import 'budget_sheets.dart';
 
 class PersonalScreen extends StatefulWidget {
-  const PersonalScreen({super.key, this.repository, this.now});
+  const PersonalScreen({
+    super.key,
+    this.repository,
+    this.now,
+    this.isDemo = false,
+  });
   final BudgetRepository? repository;
   final DateTime Function()? now;
+  final bool isDemo;
   @override
   State<PersonalScreen> createState() => _PersonalScreenState();
 }
@@ -130,7 +136,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
                               ),
                             ),
                           ),
-                          if (widget.repository == null)
+                          if (widget.repository == null || widget.isDemo)
                             Container(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 12,

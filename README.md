@@ -159,3 +159,21 @@ descriptions and example amounts. It retains the specified W / M / Y order and
 WELL / BAD wording. The Group mockup is reference only; its feature work is
 separate. Live close / reopen persistence needs verification after deploying
 the migration.
+
+## Balances, received payments and demo (4.1–4.6)
+
+The Group tab now shows pairwise you-owe / they-owe balances and member spending.
+Only receivers can record a payment; payment history appears alongside expenses.
+W / M / ALL filter activity over the last 7 / 30 days / all time. Current debts
+stay all-time, so settling an older expense does not create a false new debt.
+Davante's group-expenses branch is integrated as the group/receipt foundation.
+
+For a repeatable demo with example data and no Supabase writes:
+
+```sh
+flutter run -d web-server --web-port=8765 --dart-define=DEMO_MODE=true
+```
+
+Open http://localhost:8765. Reload to reset. See
+[the two-minute walkthrough](docs/BALANCES_AND_DEMO.md) for exact actions,
+expected amounts, production prerequisites, and what the in-memory demo proves.
