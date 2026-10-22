@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:typed_data';
 
 import 'package:budget_app/features/group/group_models.dart';
 import 'package:budget_app/features/group/group_repository.dart';
@@ -184,8 +183,9 @@ void main() {
     tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
       SystemChannels.platform,
       (call) async {
-        if (call.method == 'Clipboard.setData')
+        if (call.method == 'Clipboard.setData') {
           copied = (call.arguments as Map)['text'] as String;
+        }
         return null;
       },
     );

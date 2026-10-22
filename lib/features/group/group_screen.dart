@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -60,8 +59,9 @@ class _GroupScreenState extends State<GroupScreen> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed && _group != null)
+    if (state == AppLifecycleState.resumed && _group != null) {
       unawaited(_refresh());
+    }
   }
 
   Future<void> _loadGroups([String? selected]) async {
@@ -78,11 +78,12 @@ class _GroupScreenState extends State<GroupScreen> with WidgetsBindingObserver {
         await _open(matches.isEmpty ? groups.first : matches.first);
       }
     } catch (e) {
-      if (mounted)
+      if (mounted) {
         setState(() {
           _busy = false;
           _error = 'Could not load groups: $e';
         });
+      }
     }
   }
 
@@ -101,11 +102,12 @@ class _GroupScreenState extends State<GroupScreen> with WidgetsBindingObserver {
         .listen(
           (_) => unawaited(_refresh()),
           onError: (Object e) {
-            if (mounted)
+            if (mounted) {
               setState(
                 () => _error =
                     'Live connection interrupted. Pull down to refresh.',
               );
+            }
           },
         );
     await _refresh();
@@ -116,18 +118,20 @@ class _GroupScreenState extends State<GroupScreen> with WidgetsBindingObserver {
     final request = ++_request;
     try {
       final ledger = await _repository!.load(_group!.id);
-      if (mounted && request == _request)
+      if (mounted && request == _request) {
         setState(() {
           _ledger = ledger;
           _busy = false;
           _error = null;
         });
+      }
     } catch (e) {
-      if (mounted && request == _request)
+      if (mounted && request == _request) {
         setState(() {
           _busy = false;
           _error = 'Could not load expenses: $e';
         });
+      }
     }
   }
 
@@ -287,10 +291,11 @@ class _GroupScreenState extends State<GroupScreen> with WidgetsBindingObserver {
                             )
                             .toList(),
                         onChanged: (id) {
-                          if (id != null)
+                          if (id != null) {
                             unawaited(
                               _open(_groups.firstWhere((g) => g.id == id)),
                             );
+                          }
                         },
                       ),
                     Card(
@@ -318,12 +323,13 @@ class _GroupScreenState extends State<GroupScreen> with WidgetsBindingObserver {
                                 await Clipboard.setData(
                                   ClipboardData(text: _group!.code),
                                 );
-                                if (context.mounted)
+                                if (context.mounted) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(
                                       content: Text('Sync code copied'),
                                     ),
                                   );
+                                }
                               },
                               icon: const Icon(Icons.copy),
                             ),
@@ -568,11 +574,12 @@ class _GroupEntryState extends State<_GroupEntry> {
         Navigator.pop(context, id);
       }
     } catch (e) {
-      if (mounted)
+      if (mounted) {
         setState(() {
           _busy = false;
           _error = '$e';
         });
+      }
     }
   }
 
@@ -635,12 +642,14 @@ class _ReceiptViewState extends State<_ReceiptView> {
     body: FutureBuilder<Uint8List>(
       future: _image,
       builder: (context, snapshot) {
-        if (snapshot.hasError)
+        if (snapshot.hasError) {
           return const Center(
             child: Text('Could not load receipt. Go back and try again.'),
           );
-        if (!snapshot.hasData)
+        }
+        if (!snapshot.hasData) {
           return const Center(child: CircularProgressIndicator());
+        }
         return Center(
           child: InteractiveViewer(
             child: Image.memory(

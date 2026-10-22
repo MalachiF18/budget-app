@@ -45,8 +45,9 @@ String dateOnly(DateTime date) =>
 
 Map<String, int> splitCents(int amount, Iterable<String> people) {
   final ids = people.toSet().toList()..sort();
-  if (amount <= 0 || ids.isEmpty)
+  if (amount <= 0 || ids.isEmpty) {
     throw ArgumentError('Choose someone to charge.');
+  }
   return {
     for (var i = 0; i < ids.length; i++)
       ids[i]: amount ~/ ids.length + (i < amount % ids.length ? 1 : 0),

@@ -143,8 +143,9 @@ class SupabaseGroupRepository implements GroupRepository {
           );
         }
         channel!.subscribe((status, error) {
-          if (status == RealtimeSubscribeStatus.subscribed)
+          if (status == RealtimeSubscribeStatus.subscribed) {
             controller.add(null);
+          }
           if (error != null) controller.addError(error);
         });
       },
@@ -157,8 +158,9 @@ class SupabaseGroupRepository implements GroupRepository {
 
   @override
   Future<void> save(String groupId, GroupExpense expense) async {
-    if (expense.createdBy != userId)
+    if (expense.createdBy != userId) {
       throw StateError('Only the creator can edit this expense.');
+    }
     await client.rpc(
       expense.id.isEmpty ? 'add_expense' : 'update_expense',
       params: {
@@ -180,8 +182,9 @@ class SupabaseGroupRepository implements GroupRepository {
 
   @override
   Future<void> delete(GroupExpense expense) async {
-    if (expense.createdBy != userId)
+    if (expense.createdBy != userId) {
       throw StateError('Only the creator can delete this expense.');
+    }
     final path = await client.rpc(
       'delete_expense',
       params: {'p_expense_id': expense.id},
@@ -196,8 +199,9 @@ class SupabaseGroupRepository implements GroupRepository {
 
   @override
   Future<String> upload(String groupId, Uint8List bytes) async {
-    if (bytes.length > 5242880)
+    if (bytes.length > 5242880) {
       throw ArgumentError('Choose a photo under 5 MiB.');
+    }
     String ext;
     if (bytes.length >= 3 &&
         bytes[0] == 255 &&

@@ -61,13 +61,15 @@ class _ExpenseFormState extends State<ExpenseForm> {
       );
       if (file == null) return;
       final bytes = await file.readAsBytes();
-      if (bytes.length > 5242880)
+      if (bytes.length > 5242880) {
         throw ArgumentError('Choose a photo under 5 MiB.');
-      if (mounted)
+      }
+      if (mounted) {
         setState(() {
           _photo = bytes;
           _error = null;
         });
+      }
     } catch (e) {
       if (mounted) setState(() => _error = 'Could not attach photo: $e');
     }
@@ -92,8 +94,9 @@ class _ExpenseFormState extends State<ExpenseForm> {
       final cents =
           int.parse(parts[0]) * 100 +
           (parts.length == 2 ? int.parse(parts[1].padRight(2, '0')) : 0);
-      if (_photo != null)
+      if (_photo != null) {
         uploaded = await widget.repository.upload(widget.groupId, _photo!);
+      }
       final old = widget.expense;
       await widget.repository.save(
         widget.groupId,
@@ -120,11 +123,12 @@ class _ExpenseFormState extends State<ExpenseForm> {
           await widget.repository.removeReceipt(uploaded);
         } catch (_) {}
       }
-      if (mounted)
+      if (mounted) {
         setState(() {
           _saving = false;
           _error = 'Could not save expense: $e';
         });
+      }
     }
   }
 
@@ -166,8 +170,9 @@ class _ExpenseFormState extends State<ExpenseForm> {
                   validator: (v) {
                     if (!RegExp(r'^\d{1,10}(\.\d{1,2})?$')
                             .hasMatch(v?.trim() ?? '') ||
-                        (num.tryParse(v!.trim()) ?? 0) <= 0)
+                        (num.tryParse(v!.trim()) ?? 0) <= 0) {
                       return 'Enter a positive amount with up to two decimal places.';
+                    }
                     return null;
                   },
                 ),
