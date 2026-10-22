@@ -36,15 +36,18 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      - name: Build app for GitHub Pages
-        run: flutter build web --release --base-href /budget-app/
+      - name: Build app for Netlify or other root hosting
+        run: flutter build web --release
 
-      - name: Save web build for manual hosting
+      - name: Save root-hosted web build
         uses: actions/upload-artifact@v4
         with:
-          name: budget-app-web-build
+          name: budget-app-web-netlify
           path: build/web
           retention-days: 14
+
+      - name: Build app for GitHub Pages
+        run: flutter build web --release --base-href /budget-app/
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
