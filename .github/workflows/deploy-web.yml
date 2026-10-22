@@ -3,7 +3,7 @@ name: Deploy Flutter Web Preview
 on:
   push:
     branches:
-      - davante/group-expenses
+      - main
   workflow_dispatch:
 
 permissions:
