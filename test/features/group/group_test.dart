@@ -235,7 +235,7 @@ void main() {
     await screen(tester, repo);
     await tester.tap(find.text('Allen'));
     await tester.pumpAndSettle();
-    await tester.scrollUntilVisible(find.text('Their lunch'), 250);
+    await tester.ensureVisible(find.text('Their lunch'));
     expect(find.text('My lunch'), findsNothing);
     expect(find.text('Other payer'), findsNothing);
     expect(find.text('Edit'), findsNothing);
@@ -255,7 +255,7 @@ void main() {
     repo.expenses = [expense('Remote expense', 'allen')];
     repo.events.add(null);
     await tester.pumpAndSettle();
-    await tester.scrollUntilVisible(find.text('Remote expense'), 250);
+    await tester.ensureVisible(find.text('Remote expense'));
     expect(find.text('Remote expense'), findsOneWidget);
     repo.expenses = [];
     repo.events.add(null);
