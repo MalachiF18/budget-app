@@ -33,7 +33,7 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    expect(find.textContaining('card 3.2'), findsOneWidget);
+    expect(find.text('Split & Spend together'), findsOneWidget);
   });
 
   testWidgets('primary color differs between tabs', (tester) async {
